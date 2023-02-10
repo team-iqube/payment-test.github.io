@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <form id="paymentForm">
+    <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email-address" required />
+         </div>
+      <div class="form-group">
+           <label for="amount">Amount</label>
+          <input type="tel" id="amount" required />
+         </div>
+        <div class="form-group">
+           <label for="reference">Reference</label>
+            <input type="text" id="reference" />
+         </div>
+       
+        <div class="form-submit">
+           <button type="submit" onclick="payWithPaystack()"> Pay </button>
+         </div>
+        </form>
+        
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+        <script>
+            const paymentForm = document.getElementById('paymentForm');
+            paymentForm.addEventListener("submit", payWithPaystack, false);
+            function payWithPaystack(e) {
+              e.preventDefault();
+
+              let handler = PaystackPop.setup({
+              key: 'pk_test_e059dc6072de178f4df5bb6e80110e8c0f8ea9f4', // Replace with your public key
+              email: document.getElementById("email-address").value,
+              amount: document.getElementById("amount").value * 100,
+              ref: document.getElementById("reference").value,
+               onClose: function(){
+             alert('Window closed.');
+            },
+           callback: function(response){
+            let message = 'Payment complete! Reference: ' + response.reference;
+             alert(message);
+        }
+      });
+
+      handler.openIframe();
+}
+        </script>
+</html>
